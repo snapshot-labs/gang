@@ -1,7 +1,7 @@
 import { computed, reactive } from 'vue';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { useWeb3 } from '@/composables/useWeb3';
-import {getSpreadsheet} from "@/helpers/spreadsheet";
+import { getSpreadsheet } from '@/helpers/spreadsheet';
 
 const state = reactive({
   init: false,

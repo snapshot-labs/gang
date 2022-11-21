@@ -7,20 +7,27 @@ const { app } = useApp();
 <template>
   <Container class="s-box max-w-[800px] py-5">
     <div class="space-y-4">
-      <div v-for="circle in Object.values(app.circles).filter(c => !c.parent)">
+      <div
+        v-for="(circle, key) in Object.values(app.circles).filter(
+          c => !c.parent
+        )"
+        :key="key"
+      >
         <h3 class="mb-2">
           {{ circle.id }}
           <UiCounter
             :counter="
-              Object.values(app.circles).filter(c => c.parent === circle.id).length
+              Object.values(app.circles).filter(c => c.parent === circle.id)
+                .length
             "
           />
         </h3>
-        <div class="grid grid-cols-2 gap-3">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
           <router-link
-            v-for="sub in Object.values(app.circles).filter(
+            v-for="(sub, key1) in Object.values(app.circles).filter(
               c => c.parent === circle.id
             )"
+            :key="key1"
             :to="{ name: 'circle', params: { id: sub.id } }"
             class="overflow-hidden border rounded-lg px-3 py-2"
           >
@@ -38,9 +45,10 @@ const { app } = useApp();
                 <div class="eyebrow">Member(s)</div>
                 <div class="-space-x-1">
                   <span
-                    v-for="member in Object.values(app.members).filter(m =>
-                      m.circles.split(',').includes(sub.id)
+                    v-for="(member, key2) in Object.values(app.members).filter(
+                      m => m.circles.split(',').includes(sub.id)
                     )"
+                    :key="key2"
                     class="inline-block"
                   >
                     <img

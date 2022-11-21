@@ -9,7 +9,9 @@ const { app } = useApp();
 const id: string = route.params.id as string;
 
 const member = ref(app.value.members[id]);
-const leads = ref(Object.values(app.value.circles).filter(circle => circle.lead === id));
+const leads = ref(
+  Object.values(app.value.circles).filter(circle => circle.lead === id)
+);
 </script>
 
 <template>
@@ -24,17 +26,17 @@ const leads = ref(Object.values(app.value.circles).filter(circle => circle.lead 
 
     <div v-if="leads.length">
       <div class="eyebrow">Lead(s)</div>
-      <div v-for="lead in leads">
-        <router-link :to="{ name: 'circle', params: { id: lead.id }}">
+      <div v-for="(lead, key) in leads" :key="key">
+        <router-link :to="{ name: 'circle', params: { id: lead.id } }">
           <b>#{{ lead.id }}</b>
         </router-link>
       </div>
     </div>
 
     <div>
-      <div class="eyebrow">Circle(s)</div>
-      <div v-for="circle in member.circles.split(',')">
-        <router-link :to="{ name: 'circle', params: { id: circle }}">
+      <div class="eyebrow">Gang(s)</div>
+      <div v-for="(circle, key) in member.circles.split(',')" :key="key">
+        <router-link :to="{ name: 'circle', params: { id: circle } }">
           <b>#{{ circle }}</b>
         </router-link>
       </div>

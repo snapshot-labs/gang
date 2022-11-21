@@ -8,7 +8,7 @@ import { useWeb3 } from '@/composables/useWeb3';
 const { modalOpen } = useModal();
 const { userSkin } = useUserSkin();
 const { init, app } = useApp();
-const { web3, web3Account } = useWeb3();
+const { web3 } = useWeb3();
 
 provide('web3', web3);
 

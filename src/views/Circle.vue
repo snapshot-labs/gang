@@ -15,7 +15,10 @@ const domains = ref(app.value.domains.filter(domain => domain.circle === id));
 
 <template>
   <Container class="s-box max-w-[800px] py-5">
-    <h2 class="mb-4">#{{ circle.id }}</h2>
+    <div class="mb-4">
+      <h2 class="mb-2">#{{ circle.id }}</h2>
+      <p v-if="circle.about">{{ circle.about }}</p>
+    </div>
     <div v-if="circle.id" class="space-y-3">
       <div v-if="lead">
         <div class="eyebrow">Lead</div>
@@ -30,9 +33,13 @@ const domains = ref(app.value.domains.filter(domain => domain.circle === id));
 
       <div>
         <div class="eyebrow">Member(s)</div>
-        <div v-for="member in Object.values(app.members).filter(m =>
-              m.circles.split(',').includes(circle.id)
-            )" class="mb-1">
+        <div
+          v-for="(member, key) in Object.values(app.members).filter(m =>
+            m.circles.split(',').includes(circle.id)
+          )"
+          :key="key"
+          class="mb-1"
+        >
           <router-link
             :to="{ name: 'member', params: { id: member.id } }"
             class="mb-1 space-x-1"
@@ -48,7 +55,7 @@ const domains = ref(app.value.domains.filter(domain => domain.circle === id));
 
       <div v-if="domains.length">
         <div class="eyebrow">Domain(s)</div>
-        <div v-for="domain in domains">
+        <div v-for="(domain, key) in domains" :key="key">
           <a :href="domain.name" target="_blank">
             {{ domain.name }}
           </a>
