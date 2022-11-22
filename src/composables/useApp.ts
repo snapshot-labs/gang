@@ -1,14 +1,15 @@
 import { computed, reactive } from 'vue';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { useWeb3 } from '@/composables/useWeb3';
-import { getSpreadsheet } from '@/helpers/spreadsheet';
+import { getCalendar, getSpreadsheet } from '@/helpers/google';
 
 const state = reactive({
   init: false,
   loading: false,
   circles: {},
   members: {},
-  domains: []
+  domains: [],
+  calendar: []
 });
 
 const { login } = useWeb3();
@@ -23,7 +24,8 @@ export function useApp() {
     const results = await Promise.all([
       getSpreadsheet(`${url}&gid=0`),
       getSpreadsheet(`${url}&gid=637403457`),
-      getSpreadsheet(`${url}&gid=1503558301`)
+      getSpreadsheet(`${url}&gid=1503558301`),
+      getCalendar('')
     ]);
     state.circles = Object.fromEntries(
       results[0].map(circle => [circle.id, circle])
@@ -32,6 +34,7 @@ export function useApp() {
       results[1].map(member => [member.id, member])
     );
     state.domains = results[2];
+    state.calendar = results[3];
 
     // Auto connect with gnosis-connector when inside gnosis-safe iframe
     if (window?.parent === window)

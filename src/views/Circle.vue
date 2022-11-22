@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { Ref, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useApp } from '@/composables/useApp';
 
@@ -10,7 +10,14 @@ const id: string = route.params.id as string;
 
 const circle = ref(app.value.circles[id]);
 const lead = ref(app.value.members[circle.value.lead]);
-const domains = ref(app.value.domains.filter(domain => domain.circle === id));
+const domains: Ref<any[]> = ref(
+  app.value.domains.filter((domain: any) => domain.circle === id)
+);
+const events: Ref<any[]> = ref(
+  app.value.calendar.filter(
+    (event: any) => event.summary === `#${circle.value.id}`
+  )
+);
 </script>
 
 <template>
@@ -21,7 +28,10 @@ const domains = ref(app.value.domains.filter(domain => domain.circle === id));
     </div>
     <div v-if="circle.id" class="space-y-3">
       <div v-if="lead">
-        <div class="eyebrow">Lead</div>
+        <div class="eyebrow mb-2">
+          <IH-star class="inline-block" />
+          Lead
+        </div>
         <router-link :to="{ name: 'member', params: { id: lead.id } }">
           <img
             :src="lead.avatar"
@@ -32,7 +42,10 @@ const domains = ref(app.value.domains.filter(domain => domain.circle === id));
       </div>
 
       <div>
-        <div class="eyebrow">Member(s)</div>
+        <div class="eyebrow mb-2">
+          <IH-users class="inline-block" />
+          Member(s)
+        </div>
         <div
           v-for="(member, key) in Object.values(app.members).filter(m =>
             m.circles.split(',').includes(circle.id)
@@ -54,11 +67,24 @@ const domains = ref(app.value.domains.filter(domain => domain.circle === id));
       </div>
 
       <div v-if="domains.length">
-        <div class="eyebrow">Domain(s)</div>
+        <div class="eyebrow">
+          <IH-cursor-click class="inline-block" />
+          Domain(s)
+        </div>
         <div v-for="(domain, key) in domains" :key="key">
           <a :href="domain.name" target="_blank">
             {{ domain.name }}
           </a>
+        </div>
+      </div>
+
+      <div v-if="events.length">
+        <div class="eyebrow mb-2">
+          <IH-calendar class="inline-block" />
+          Event(s)
+        </div>
+        <div class="x-block">
+          <Event v-for="(event, key) in events" :key="key" :event="event" />
         </div>
       </div>
     </div>
