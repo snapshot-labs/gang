@@ -23,28 +23,10 @@ export async function getCalendar(url) {
 
   let { items } = await fetch(url).then(res => res.json());
 
-  items = items.map(item => {
-    item.start.ts = parseInt(
-      (
-        new Date(
-          new Date(item.start.dateTime).toLocaleString('en-US', {
-            timeZone: item.start.timeZone
-          })
-        ).getTime() / 1e3
-      ).toFixed()
-    );
-    item.end.ts = parseInt(
-      (
-        new Date(
-          new Date(item.end.dateTime).toLocaleString('en-US', {
-            timeZone: item.end.timeZone
-          })
-        ).getTime() / 1e3
-      ).toFixed()
-    );
+  return items.map(item => {
+    item.start.ts = new Date(item.start.dateTime).getTime() / 1e3;
+    item.end.ts = new Date(item.end.dateTime).getTime() / 1e3;
 
     return item;
   });
-
-  return items;
 }
