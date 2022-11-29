@@ -21,30 +21,12 @@ export async function getCalendar(url) {
   const timeMax = date.toISOString();
   url = `https://clients6.google.com/calendar/v3/calendars/c_o9gndn4n4hmcsbthvkplgrlegs@group.calendar.google.com/events?calendarId=c_o9gndn4n4hmcsbthvkplgrlegs%40group.calendar.google.com&singleEvents=true&orderBy=startTime&maxResults=50&sanitizeHtml=true&timeMin=${timeMin}&timeMax=${timeMax}&key=AIzaSyBNlYH01_9Hc5S1J9vuFmu2nUqBZJNAXxs`;
 
-  let { items } = await fetch(url).then(res => res.json());
+  const { items } = await fetch(url).then(res => res.json());
 
-  items = items.map(item => {
-    item.start.ts = parseInt(
-      (
-        new Date(
-          new Date(item.start.dateTime).toLocaleString('en-US', {
-            timeZone: item.start.timeZone
-          })
-        ).getTime() / 1e3
-      ).toFixed()
-    );
-    item.end.ts = parseInt(
-      (
-        new Date(
-          new Date(item.end.dateTime).toLocaleString('en-US', {
-            timeZone: item.end.timeZone
-          })
-        ).getTime() / 1e3
-      ).toFixed()
-    );
+  return items.map(item => {
+    item.start.ts = new Date(item.start.dateTime).getTime() / 1e3;
+    item.end.ts = new Date(item.end.dateTime).getTime() / 1e3;
 
     return item;
   });
-
-  return items;
 }
