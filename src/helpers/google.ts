@@ -21,7 +21,7 @@ export async function getCalendar(url) {
   const timeMax = date.toISOString();
   url = `https://clients6.google.com/calendar/v3/calendars/c_o9gndn4n4hmcsbthvkplgrlegs@group.calendar.google.com/events?calendarId=c_o9gndn4n4hmcsbthvkplgrlegs%40group.calendar.google.com&singleEvents=true&orderBy=startTime&maxResults=50&sanitizeHtml=true&timeMin=${timeMin}&timeMax=${timeMax}&key=AIzaSyBNlYH01_9Hc5S1J9vuFmu2nUqBZJNAXxs`;
 
-  let { items } = await fetch(url).then(res => res.json());
+  const { items } = await fetch(url).then(res => res.json());
 
   return items.map(item => {
     item.start.ts = new Date(item.start.dateTime).getTime() / 1e3;
