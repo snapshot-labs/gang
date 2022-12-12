@@ -25,7 +25,7 @@ export function useApp() {
       getSpreadsheet(`${url}&gid=0`),
       getSpreadsheet(`${url}&gid=637403457`),
       getSpreadsheet(`${url}&gid=1503558301`),
-      getCalendar('')
+      []
     ]);
     state.circles = Object.fromEntries(
       results[0].map(circle => [circle.id, circle])
